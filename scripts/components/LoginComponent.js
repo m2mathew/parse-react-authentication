@@ -2,12 +2,18 @@
 var React = require('react');
 
 module.exports = React.createClass({
+    getInitialState: function() {
+        return {
+            error: null
+        }
+    },
     render: function() {
         return (
             <div className="container">
                 <h1>LOGIN</h1>
+                <p className="red-text">{this.state.error}</p>
 
-                <form className="col s12" onSubmit={this.onRegister}>
+                <form className="col s12" onSubmit={this.onLogin}>
                     <div className="row">
                       <div className="input-field col s12">
                         <input id="email" type="email" className="validate" ref=
@@ -23,31 +29,24 @@ module.exports = React.createClass({
                       </div>
                     </div>
 
-                    <button className="waves-effect waves-light btn">Login</button>
+                    <button className="waves-effect waves-light btn blue darken-3">Login</button>
 
                 </form>
             </div>
         );
     },
-    onRegister: function(e) {
+    onLogin: function(e) {
         e.preventDefault();
-        console.log('the login button was clicked');
 
         var email = this.refs.email.getDOMNode().value;
         var password = this.refs.password.getDOMNode().value;
 
-        // var user = new Parse.User();
-        // user.set('username', email);
-        // user.set('password', password);
-        // user.set('email', email);
-
         Parse.User.logIn(email, password, {
             success: (user) => {
-                console.log(user);
                 this.props.router.navigate('dashboard', {trigger: true});
+
             },
             error: (user, err) => {
-                console.log(user, err);
                 this.setState({
                     error: err.message
                 });

@@ -6,8 +6,6 @@ window.$ = require('jquery');
 window.jQuery = $;
 Parse.initialize("ojxAI7TJorc3fVboJ9utxlGJFh3N12NR0qr7JEhp", "oMTauokDLBsa1KvvuKuBwOQaUJAlby6bSZN7QTyM");
 
-console.log(Parse);
-
 var NavigationComponent = require('./components/NavigationComponent');
 var HomeComponent = require('./components/HomeComponent');
 var DashboardComponent = require('./components/DashboardComponent');
@@ -30,28 +28,33 @@ var Router = Backbone.Router.extend({
         'register': 'register'
     },
     home: function() {
-        console.log(Parse.User.current().getEmail());
-        console.log('home');
         React.render(
             <HomeComponent />,
             app
         );
     },
     dashboard: function() {
-        React.render(
-            <DashboardComponent />,
-            app
-        );
+        var currentUser = Parse.User.current();
+        if(currentUser) {
+            React.render(
+                <DashboardComponent />,
+                app
+            );
+        }
+        else {
+            React.render(
+                <LoginComponent router={r} />,
+                app
+            );
+        }
     },
     login: function() {
-        console.log('login');
         React.render(
             <LoginComponent router={r} />,
             app
         );
     },
     register: function() {
-        console.log('register');
         React.render(
             <RegisterComponent router={r} />,
             app

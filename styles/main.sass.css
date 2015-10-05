@@ -1,0 +1,9 @@
+h1 {
+  border-bottom: 2px solid #2196F3; }
+
+.brand-logo {
+  margin-left: 1em;
+  text-shadow: 2px 2px 4px #aaa; }
+
+.displayed-username {
+  margin-right: 1em; }

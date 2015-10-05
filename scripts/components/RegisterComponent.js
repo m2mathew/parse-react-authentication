@@ -12,7 +12,7 @@ module.exports = React.createClass({
         return (
             <div className="container">
                 <h1>REGISTER</h1>
-                <p>{this.state.error}</p>
+                <p className="red-text">{this.state.error}</p>
                 <form className="col s12" onSubmit={this.onRegister}>
                     <div className="row">
                       <div className="input-field col s12">
@@ -29,7 +29,7 @@ module.exports = React.createClass({
                       </div>
                     </div>
 
-                    <button className="waves-effect waves-light btn">Register</button>
+                    <button className="waves-effect waves-light btn blue darken-3">Register</button>
 
                     </form>
             </div>
@@ -37,7 +37,6 @@ module.exports = React.createClass({
     },
     onRegister: function(e) {
         e.preventDefault();
-        console.log('the register button was clicked');
         var email = this.refs.email.getDOMNode().value;
         var password = this.refs.password.getDOMNode().value;
         console.log(email, password);

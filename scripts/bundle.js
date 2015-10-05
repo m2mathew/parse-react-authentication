@@ -32586,6 +32586,11 @@ var React = require('react');
 module.exports = React.createClass({
     displayName: 'exports',
 
+    getInitialState: function getInitialState() {
+        return {
+            error: null
+        };
+    },
     render: function render() {
         return React.createElement(
             'div',
@@ -32596,8 +32601,13 @@ module.exports = React.createClass({
                 'LOGIN'
             ),
             React.createElement(
+                'p',
+                { className: 'red-text' },
+                this.state.error
+            ),
+            React.createElement(
                 'form',
-                { className: 'col s12', onSubmit: this.onRegister },
+                { className: 'col s12', onSubmit: this.onLogin },
                 React.createElement(
                     'div',
                     { className: 'row' },
@@ -32628,33 +32638,25 @@ module.exports = React.createClass({
                 ),
                 React.createElement(
                     'button',
-                    { className: 'waves-effect waves-light btn' },
+                    { className: 'waves-effect waves-light btn blue darken-3' },
                     'Login'
                 )
             )
         );
     },
-    onRegister: function onRegister(e) {
+    onLogin: function onLogin(e) {
         var _this = this;
 
         e.preventDefault();
-        console.log('the login button was clicked');
 
         var email = this.refs.email.getDOMNode().value;
         var password = this.refs.password.getDOMNode().value;
 
-        // var user = new Parse.User();
-        // user.set('username', email);
-        // user.set('password', password);
-        // user.set('email', email);
-
         Parse.User.logIn(email, password, {
             success: function success(user) {
-                console.log(user);
                 _this.props.router.navigate('dashboard', { trigger: true });
             },
             error: function error(user, err) {
-                console.log(user, err);
                 _this.setState({
                     error: err.message
                 });
@@ -32666,22 +32668,76 @@ module.exports = React.createClass({
 },{"react":159}],163:[function(require,module,exports){
 'use strict';
 var React = require('react');
+var HomeComponent = require('./HomeComponent');
 
 module.exports = React.createClass({
     displayName: 'exports',
 
     render: function render() {
+        var currentUser = Parse.User.current();
+
+        var links = [];
+
+        if (currentUser) {
+            links.push(React.createElement(
+                'li',
+                null,
+                React.createElement(
+                    'a',
+                    { href: '#dashboard', key: this.indexOf },
+                    'Dashboard'
+                )
+            ));
+            links.push(React.createElement(
+                'li',
+                null,
+                React.createElement(
+                    'a',
+                    { href: '#logout', onClick: this.onLogoutClick, key: this.indexOf },
+                    'Logout'
+                )
+            ));
+            links.push(React.createElement(
+                'li',
+                { className: 'displayed-username', key: this.indexOf },
+                currentUser.getEmail()
+            ));
+        } else {
+            links.push(React.createElement(
+                'li',
+                null,
+                React.createElement(
+                    'a',
+                    { href: '#login', key: this.indexOf },
+                    'Login'
+                )
+            ));
+            links.push(React.createElement(
+                'li',
+                null,
+                React.createElement(
+                    'a',
+                    { href: '#register', key: this.indexOf },
+                    'Register'
+                )
+            ));
+        }
+
         return React.createElement(
             'div',
-            { className: 'nav-wrapper blue' },
+            { className: 'nav-wrapper light-blue lighten-2' },
             React.createElement(
-                'a',
-                { href: '#!', className: 'brand-logo offset-s1' },
-                'Parse + Materialize'
+                'div',
+                null,
+                React.createElement(
+                    'a',
+                    { href: '#!', className: 'brand-logo offset-s1' },
+                    'Parse + Materialize'
+                )
             ),
             React.createElement(
                 'ul',
-                { className: 'right hide-on-med-and-down' },
+                { className: 'right hide-on-med-and-down nav-list' },
                 React.createElement(
                     'li',
                     null,
@@ -32691,39 +32747,20 @@ module.exports = React.createClass({
                         'Home'
                     )
                 ),
-                React.createElement(
-                    'li',
-                    null,
-                    React.createElement(
-                        'a',
-                        { href: '#dashboard' },
-                        'Dashboard'
-                    )
-                ),
-                React.createElement(
-                    'li',
-                    null,
-                    React.createElement(
-                        'a',
-                        { href: '#login' },
-                        'Login'
-                    )
-                ),
-                React.createElement(
-                    'li',
-                    null,
-                    React.createElement(
-                        'a',
-                        { href: '#register' },
-                        'Register'
-                    )
-                )
+                links
             )
         );
+    },
+    onLogoutClick: function onLogoutClick() {
+        Parse.User.logOut();
+        this.forceUpdate();
+
+        var currentUser = Parse.User.current();
+        React.render(React.createElement(HomeComponent, null), app);
     }
 });
 
-},{"react":159}],164:[function(require,module,exports){
+},{"./HomeComponent":161,"react":159}],164:[function(require,module,exports){
 'use strict';
 var React = require('react');
 
@@ -32747,7 +32784,7 @@ module.exports = React.createClass({
             ),
             React.createElement(
                 'p',
-                null,
+                { className: 'red-text' },
                 this.state.error
             ),
             React.createElement(
@@ -32783,7 +32820,7 @@ module.exports = React.createClass({
                 ),
                 React.createElement(
                     'button',
-                    { className: 'waves-effect waves-light btn' },
+                    { className: 'waves-effect waves-light btn blue darken-3' },
                     'Register'
                 )
             )
@@ -32793,7 +32830,6 @@ module.exports = React.createClass({
         var _this = this;
 
         e.preventDefault();
-        console.log('the register button was clicked');
         var email = this.refs.email.getDOMNode().value;
         var password = this.refs.password.getDOMNode().value;
         console.log(email, password);
@@ -32830,8 +32866,6 @@ window.$ = require('jquery');
 window.jQuery = $;
 Parse.initialize("ojxAI7TJorc3fVboJ9utxlGJFh3N12NR0qr7JEhp", "oMTauokDLBsa1KvvuKuBwOQaUJAlby6bSZN7QTyM");
 
-console.log(Parse);
-
 var NavigationComponent = require('./components/NavigationComponent');
 var HomeComponent = require('./components/HomeComponent');
 var DashboardComponent = require('./components/DashboardComponent');
@@ -32851,19 +32885,20 @@ var Router = Backbone.Router.extend({
         'register': 'register'
     },
     home: function home() {
-        console.log(Parse.User.current().getEmail());
-        console.log('home');
         React.render(React.createElement(HomeComponent, null), app);
     },
     dashboard: function dashboard() {
-        React.render(React.createElement(DashboardComponent, null), app);
+        var currentUser = Parse.User.current();
+        if (currentUser) {
+            React.render(React.createElement(DashboardComponent, null), app);
+        } else {
+            React.render(React.createElement(LoginComponent, { router: r }), app);
+        }
     },
     login: function login() {
-        console.log('login');
         React.render(React.createElement(LoginComponent, { router: r }), app);
     },
     register: function register() {
-        console.log('register');
         React.render(React.createElement(RegisterComponent, { router: r }), app);
     }
 });
