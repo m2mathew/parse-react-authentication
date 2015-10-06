@@ -32530,6 +32530,40 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":32}],160:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+    displayName: 'exports',
+
+    getInitialState: function getInitialState() {
+        return { numClicks: 0 };
+    },
+    componentWillMount: function componentWillMount() {
+        var self = this;
+        this.props.dispatcher.on('greeting', function (e) {
+            self.setState({
+                numClicks: self.state.numClicks + 1
+            });
+        });
+    },
+    render: function render() {
+        return React.createElement(
+            'div',
+            { className: 'col-sm-6' },
+            React.createElement(
+                'h3',
+                null,
+                'There have been ',
+                this.state.numClicks,
+                ' clicks'
+            )
+        );
+    }
+});
+
+},{"react":159}],161:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32540,21 +32574,82 @@ module.exports = React.createClass({
     render: function render() {
         return React.createElement(
             "div",
-            { className: "container" },
+            { className: "col-sm-6" },
             React.createElement(
-                "div",
-                { className: "row" },
+                "button",
+                { className: "waves-effect waves-light btn-large light-blue lighten-2 white-text", onClick: this.onButtonClick },
+                "Click Me!"
+            )
+        );
+    },
+    onButtonClick: function onButtonClick(e) {
+        this.props.dispatcher.trigger('greeting', 'hello');
+    }
+});
+
+},{"react":159}],162:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var Backbone = require('backbone');
+var _ = require('backbone/node_modules/underscore');
+var DashButtonComponent = require('./DashButtonComponent');
+var DashBoxComponent = require('./DashBoxComponent');
+
+module.exports = React.createClass({
+    displayName: 'exports',
+
+    componentWillMount: function componentWillMount() {
+        this.dispatcher = {};
+        _.extend(this.dispatcher, Backbone.Events);
+    },
+    render: function render() {
+        return React.createElement(
+            'div',
+            { className: 'container' },
+            React.createElement(
+                'div',
+                { className: 'row' },
                 React.createElement(
-                    "h1",
+                    'h1',
                     null,
-                    "Dashboard"
+                    'Dashboard'
+                )
+            ),
+            React.createElement(
+                'div',
+                { className: 'row button-clicking-box' },
+                React.createElement(DashButtonComponent, { dispatcher: this.dispatcher }),
+                React.createElement(DashBoxComponent, { dispatcher: this.dispatcher })
+            ),
+            React.createElement(
+                'div',
+                { className: 'home-pic' },
+                React.createElement('img', { src: 'https://d13yacurqjgara.cloudfront.net/users/150724/screenshots/1888488/149_x-wing_1x.png' }),
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'small',
+                        null,
+                        'original artwork by Marko Stupic from Croatia'
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'small',
+                        null,
+                        'hesitantly borrowed from his nifty collection at dribbble.com'
+                    )
                 )
             )
         );
     }
 });
 
-},{"react":159}],161:[function(require,module,exports){
+},{"./DashBoxComponent":160,"./DashButtonComponent":161,"backbone":1,"backbone/node_modules/underscore":2,"react":159}],163:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32574,12 +32669,35 @@ module.exports = React.createClass({
                     null,
                     "Home"
                 )
+            ),
+            React.createElement(
+                "div",
+                { className: "home-pic" },
+                React.createElement("img", { src: "https://d13yacurqjgara.cloudfront.net/users/255/screenshots/2249815/falcon.gif" }),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "small",
+                        null,
+                        "original artwork by Rogie King from Helena, Montana"
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "small",
+                        null,
+                        "hesitantly borrowed from his curated collection at dribbble.com"
+                    )
+                )
             )
         );
     }
 });
 
-},{"react":159}],162:[function(require,module,exports){
+},{"react":159}],164:[function(require,module,exports){
 'use strict';
 var React = require('react');
 
@@ -32665,62 +32783,50 @@ module.exports = React.createClass({
     }
 });
 
-},{"react":159}],163:[function(require,module,exports){
+},{"react":159}],165:[function(require,module,exports){
 'use strict';
 var React = require('react');
+var Backbone = require('backbone');
 var HomeComponent = require('./HomeComponent');
 
 module.exports = React.createClass({
     displayName: 'exports',
 
+    componentWillMount: function componentWillMount() {
+        var _this = this;
+
+        this.props.router.on('route', function () {
+            _this.forceUpdate();
+        });
+    },
     render: function render() {
         var currentUser = Parse.User.current();
 
+        var currentUrl = Backbone.history.getFragment();
+
         var links = [];
 
+        links.push(this.createNavLink('', 'Home'));
+
         if (currentUser) {
+            links.push(this.createNavLink('dashboard', 'Dashboard'));
             links.push(React.createElement(
                 'li',
-                null,
+                { key: this.objectId },
                 React.createElement(
                     'a',
-                    { href: '#dashboard', key: this.indexOf },
-                    'Dashboard'
-                )
-            ));
-            links.push(React.createElement(
-                'li',
-                null,
-                React.createElement(
-                    'a',
-                    { href: '#logout', onClick: this.onLogoutClick, key: this.indexOf },
+                    { href: '#', onClick: this.onLogoutClick },
                     'Logout'
                 )
             ));
             links.push(React.createElement(
                 'li',
-                { className: 'displayed-username', key: this.indexOf },
+                { className: 'displayed-username', key: this.objectId },
                 currentUser.getEmail()
             ));
         } else {
-            links.push(React.createElement(
-                'li',
-                null,
-                React.createElement(
-                    'a',
-                    { href: '#login', key: this.indexOf },
-                    'Login'
-                )
-            ));
-            links.push(React.createElement(
-                'li',
-                null,
-                React.createElement(
-                    'a',
-                    { href: '#register', key: this.indexOf },
-                    'Register'
-                )
-            ));
+            links.push(this.createNavLink('login', 'Login'));
+            links.push(this.createNavLink('register', 'Register'));
         }
 
         return React.createElement(
@@ -32738,29 +32844,45 @@ module.exports = React.createClass({
             React.createElement(
                 'ul',
                 { className: 'right hide-on-med-and-down nav-list' },
-                React.createElement(
-                    'li',
-                    null,
-                    React.createElement(
-                        'a',
-                        { href: '#' },
-                        'Home'
-                    )
-                ),
                 links
             )
         );
     },
-    onLogoutClick: function onLogoutClick() {
+    onLogoutClick: function onLogoutClick(e) {
+        e.preventDefault();
         Parse.User.logOut();
         this.forceUpdate();
 
-        var currentUser = Parse.User.current();
-        React.render(React.createElement(HomeComponent, null), app);
+        this.props.router.navigate('', { trigger: true });
+    },
+    createNavLink: function createNavLink(url, label) {
+        var currentUrl = Backbone.history.getFragment();
+
+        if (currentUrl === url) {
+            return React.createElement(
+                'li',
+                { className: 'active', key: this.objectId },
+                React.createElement(
+                    'a',
+                    { href: "#" + url },
+                    label
+                )
+            );
+        } else {
+            return React.createElement(
+                'li',
+                { key: this.objectId },
+                React.createElement(
+                    'a',
+                    { href: "#" + url },
+                    label
+                )
+            );
+        }
     }
 });
 
-},{"./HomeComponent":161,"react":159}],164:[function(require,module,exports){
+},{"./HomeComponent":163,"backbone":1,"react":159}],166:[function(require,module,exports){
 'use strict';
 var React = require('react');
 
@@ -32773,7 +32895,6 @@ module.exports = React.createClass({
         };
     },
     render: function render() {
-        console.log('render', this.state.error);
         return React.createElement(
             'div',
             { className: 'container' },
@@ -32832,7 +32953,6 @@ module.exports = React.createClass({
         e.preventDefault();
         var email = this.refs.email.getDOMNode().value;
         var password = this.refs.password.getDOMNode().value;
-        console.log(email, password);
 
         var user = new Parse.User();
         user.set('username', email);
@@ -32841,14 +32961,12 @@ module.exports = React.createClass({
 
         user.signUp(null, {
             success: function success(user) {
-                console.log(user);
                 _this.setState({
                     error: null
                 });
-                _this.props.router.navigate('', { trigger: true });
+                _this.props.router.navigate('dashboard', { trigger: true });
             },
             error: function error(user, err) {
-                console.log(user, err);
                 _this.setState({
                     error: err.message
                 });
@@ -32857,7 +32975,7 @@ module.exports = React.createClass({
     }
 });
 
-},{"react":159}],165:[function(require,module,exports){
+},{"react":159}],167:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -32874,8 +32992,6 @@ var RegisterComponent = require('./components/RegisterComponent');
 
 var app = document.getElementById('app');
 var nav = document.getElementById('nav');
-
-React.render(React.createElement(NavigationComponent, null), nav);
 
 var Router = Backbone.Router.extend({
     routes: {
@@ -32906,7 +33022,9 @@ var Router = Backbone.Router.extend({
 var r = new Router();
 Backbone.history.start();
 
-},{"./components/DashboardComponent":160,"./components/HomeComponent":161,"./components/LoginComponent":162,"./components/NavigationComponent":163,"./components/RegisterComponent":164,"backbone":1,"jquery":4,"react":159}]},{},[165])
+React.render(React.createElement(NavigationComponent, { router: r }), nav);
+
+},{"./components/DashboardComponent":162,"./components/HomeComponent":163,"./components/LoginComponent":164,"./components/NavigationComponent":165,"./components/RegisterComponent":166,"backbone":1,"jquery":4,"react":159}]},{},[167])
 
 
 //# sourceMappingURL=bundle.js.map

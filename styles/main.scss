@@ -1,12 +1,32 @@
+main {
+    font-family: 'Droid Serif', serif;
+}
+
 h1 {
     border-bottom: 2px solid #2196F3;
+    font-weight: 700;
 }
 
 .brand-logo {
     margin-left: 1em;
-    text-shadow: 2px 2px 4px #aaa;
+    text-shadow: 2px 2px 4px #444;
 }
 
 .displayed-username {
-    margin-right: 1em;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+.home-pic {
+    text-align: center;
+}
+
+.button-clicking-box {
+    text-align: center;
+    padding-top: 4em;
+    padding-bottom: 4em;
+}
+
+button {
+    margin-bottom: 4em;
 }

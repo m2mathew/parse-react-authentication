@@ -30,7 +30,6 @@ module.exports = React.createClass({
                     </div>
 
                     <button className="waves-effect waves-light btn blue darken-3">Login</button>
-
                 </form>
             </div>
         );
@@ -44,7 +43,6 @@ module.exports = React.createClass({
         Parse.User.logIn(email, password, {
             success: (user) => {
                 this.props.router.navigate('dashboard', {trigger: true});
-
             },
             error: (user, err) => {
                 this.setState({

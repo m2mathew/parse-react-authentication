@@ -15,11 +15,6 @@ var RegisterComponent = require('./components/RegisterComponent');
 var app = document.getElementById('app');
 var nav = document.getElementById('nav');
 
-React.render(
-    <NavigationComponent />,
-    nav
-);
-
 var Router = Backbone.Router.extend({
     routes: {
         '': 'home',
@@ -64,3 +59,8 @@ var Router = Backbone.Router.extend({
 
 var r = new Router;
 Backbone.history.start();
+
+React.render(
+    <NavigationComponent router={r} />,
+    nav
+);

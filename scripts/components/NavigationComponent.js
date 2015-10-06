@@ -1,41 +1,57 @@
 'use strict';
 var React = require('react');
+var Backbone = require('backbone');
 var HomeComponent = require('./HomeComponent');
 
 module.exports = React.createClass({
+    componentWillMount: function() {
+        this.props.router.on('route', () => {
+            this.forceUpdate();
+        });
+    },
     render: function() {
         var currentUser = Parse.User.current();
 
+        var currentUrl = Backbone.history.getFragment();
+
         var links = [];
 
+        links.push(this.createNavLink('', 'Home'));
+
         if(currentUser) {
-            links.push(<li><a href="#dashboard" key={this.indexOf}>Dashboard</a></li>);
-            links.push(<li><a href="#logout" onClick={this.onLogoutClick} key={this.indexOf}>Logout</a></li>);
-            links.push(<li className="displayed-username" key={this.indexOf}>{currentUser.getEmail()}</li>);
+            links.push(this.createNavLink('dashboard', 'Dashboard'));
+            links.push(<li key={this.objectId}><a href="#" onClick={this.onLogoutClick}>Logout</a></li>);
+            links.push(<li className="displayed-username" key={this.objectId}>{currentUser.getEmail()}</li>);
         }
         else {
-            links.push(<li><a href="#login" key={this.indexOf}>Login</a></li>);
-            links.push(<li><a href="#register" key={this.indexOf}>Register</a></li>);
+            links.push(this.createNavLink('login', 'Login'));
+            links.push(this.createNavLink('register', 'Register'));
         }
 
         return (
             <div className="nav-wrapper light-blue lighten-2">
                 <div><a href="#!" className="brand-logo offset-s1">Parse + Materialize</a></div>
                 <ul className="right hide-on-med-and-down nav-list">
-                  <li><a href="#">Home</a></li>
                   {links}
                 </ul>
             </div>
         );
     },
-    onLogoutClick: function() {
+    onLogoutClick: function(e) {
+        e.preventDefault();
         Parse.User.logOut();
         this.forceUpdate();
 
-        var currentUser = Parse.User.current();
-        React.render(
-            <HomeComponent />,
-            app
-        );
+        this.props.router.navigate('', {trigger: true});
+    },
+    createNavLink: function(url, label) {
+        var currentUrl = Backbone.history.getFragment();
+
+        if(currentUrl === url) {
+            return (<li className="active" key={this.objectId}><a href={"#"+url}>{label}</a></li>);
+        }
+        else {
+            return (<li key={this.objectId}><a href={"#"+url}>{label}</a></li>);
+        }
     }
 });

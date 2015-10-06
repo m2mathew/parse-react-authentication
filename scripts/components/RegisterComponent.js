@@ -8,7 +8,6 @@ module.exports = React.createClass({
         }
     },
     render: function() {
-        console.log('render', this.state.error);
         return (
             <div className="container">
                 <h1>REGISTER</h1>
@@ -39,7 +38,6 @@ module.exports = React.createClass({
         e.preventDefault();
         var email = this.refs.email.getDOMNode().value;
         var password = this.refs.password.getDOMNode().value;
-        console.log(email, password);
 
         var user = new Parse.User();
         user.set('username', email);
@@ -48,14 +46,12 @@ module.exports = React.createClass({
 
         user.signUp(null, {
             success: (user) => {
-                console.log(user);
                 this.setState({
                     error: null
                 });
-                this.props.router.navigate('', {trigger: true});
+                this.props.router.navigate('dashboard', {trigger: true});
             },
             error: (user, err) => {
-                console.log(user, err);
                 this.setState({
                     error: err.message
                 });
