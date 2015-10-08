@@ -1,12 +1,18 @@
 'use strict';
 var React = require('react');
 var Backbone = require('backbone');
+var $ = require('jquery');
 var HomeComponent = require('./HomeComponent');
 
 module.exports = React.createClass({
     componentWillMount: function() {
         this.props.router.on('route', () => {
             this.forceUpdate();
+        });
+    },
+    componentDidMount: function() {
+        $('document').ready(function(){
+            $(".button-collapse").sideNav();
         });
     },
     render: function() {
@@ -30,8 +36,16 @@ module.exports = React.createClass({
 
         return (
             <div className="nav-wrapper light-blue lighten-2">
-                <div><a href="#!" className="brand-logo offset-s1">Parse + Materialize</a></div>
+                <div>
+                    <a href="#!" className="brand-logo offset-s1">Parse + Materialize</a>
+                </div>
+                <a href="#" data-activates="mobile-demo" className="button-collapse">
+                    <i className="material-icons">menu</i>
+                </a>
                 <ul className="right hide-on-med-and-down nav-list">
+                  {links}
+                </ul>
+                <ul className="side-nav" id="mobile-demo">
                   {links}
                 </ul>
             </div>

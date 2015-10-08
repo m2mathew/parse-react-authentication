@@ -32787,6 +32787,7 @@ module.exports = React.createClass({
 'use strict';
 var React = require('react');
 var Backbone = require('backbone');
+var $ = require('jquery');
 var HomeComponent = require('./HomeComponent');
 
 module.exports = React.createClass({
@@ -32797,6 +32798,11 @@ module.exports = React.createClass({
 
         this.props.router.on('route', function () {
             _this.forceUpdate();
+        });
+    },
+    componentDidMount: function componentDidMount() {
+        $('document').ready(function () {
+            $(".button-collapse").sideNav();
         });
     },
     render: function render() {
@@ -32842,8 +32848,22 @@ module.exports = React.createClass({
                 )
             ),
             React.createElement(
+                'a',
+                { href: '#', 'data-activates': 'mobile-demo', className: 'button-collapse' },
+                React.createElement(
+                    'i',
+                    { className: 'material-icons' },
+                    'menu'
+                )
+            ),
+            React.createElement(
                 'ul',
                 { className: 'right hide-on-med-and-down nav-list' },
+                links
+            ),
+            React.createElement(
+                'ul',
+                { className: 'side-nav', id: 'mobile-demo' },
                 links
             )
         );
@@ -32882,7 +32902,7 @@ module.exports = React.createClass({
     }
 });
 
-},{"./HomeComponent":163,"backbone":1,"react":159}],166:[function(require,module,exports){
+},{"./HomeComponent":163,"backbone":1,"jquery":4,"react":159}],166:[function(require,module,exports){
 'use strict';
 var React = require('react');
 
