@@ -32609,39 +32609,39 @@ module.exports = React.createClass({
             { className: 'container' },
             React.createElement(
                 'div',
-                { className: 'row' },
+                { className: 'row col s8 m10' },
                 React.createElement(
                     'h1',
                     null,
                     'Dashboard'
-                )
-            ),
-            React.createElement(
-                'div',
-                { className: 'row button-clicking-box' },
-                React.createElement(DashButtonComponent, { dispatcher: this.dispatcher }),
-                React.createElement(DashBoxComponent, { dispatcher: this.dispatcher })
-            ),
-            React.createElement(
-                'div',
-                { className: 'home-pic' },
-                React.createElement('img', { src: 'https://d13yacurqjgara.cloudfront.net/users/150724/screenshots/1888488/149_x-wing_1x.png' }),
-                React.createElement(
-                    'div',
-                    null,
-                    React.createElement(
-                        'small',
-                        null,
-                        'original artwork by Marko Stupic from Croatia'
-                    )
                 ),
                 React.createElement(
                     'div',
-                    null,
+                    { className: 'row button-clicking-box' },
+                    React.createElement(DashButtonComponent, { dispatcher: this.dispatcher }),
+                    React.createElement(DashBoxComponent, { dispatcher: this.dispatcher })
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'home-pic' },
+                    React.createElement('img', { src: 'https://d13yacurqjgara.cloudfront.net/users/150724/screenshots/1888488/149_x-wing_1x.png' }),
                     React.createElement(
-                        'small',
+                        'div',
                         null,
-                        'hesitantly borrowed from his nifty collection at dribbble.com'
+                        React.createElement(
+                            'small',
+                            null,
+                            'original artwork by Marko Stupic from Croatia'
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        null,
+                        React.createElement(
+                            'small',
+                            null,
+                            'hesitantly borrowed from his nifty collection at dribbble.com'
+                        )
                     )
                 )
             )
@@ -32663,33 +32663,33 @@ module.exports = React.createClass({
             { className: "container" },
             React.createElement(
                 "div",
-                { className: "row" },
+                { className: "row col s8 m10" },
                 React.createElement(
                     "h1",
                     null,
                     "Home"
-                )
-            ),
-            React.createElement(
-                "div",
-                { className: "home-pic" },
-                React.createElement("img", { src: "https://d13yacurqjgara.cloudfront.net/users/255/screenshots/2249815/falcon.gif" }),
-                React.createElement(
-                    "div",
-                    null,
-                    React.createElement(
-                        "small",
-                        null,
-                        "original artwork by Rogie King from Helena, Montana"
-                    )
                 ),
                 React.createElement(
                     "div",
-                    null,
+                    { className: "home-pic s6 m6 l8" },
+                    React.createElement("img", { src: "https://d13yacurqjgara.cloudfront.net/users/255/screenshots/2249815/falcon.gif" }),
                     React.createElement(
-                        "small",
+                        "div",
                         null,
-                        "hesitantly borrowed from his curated collection at dribbble.com"
+                        React.createElement(
+                            "small",
+                            null,
+                            "original artwork by Rogie King from Helena, Montana"
+                        )
+                    ),
+                    React.createElement(
+                        "div",
+                        null,
+                        React.createElement(
+                            "small",
+                            null,
+                            "hesitantly borrowed from his curated collection at dribbble.com"
+                        )
                     )
                 )
             )

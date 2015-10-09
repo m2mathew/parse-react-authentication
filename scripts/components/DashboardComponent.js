@@ -14,17 +14,18 @@ module.exports = React.createClass({
     render: function() {
         return (
             <div className="container">
-                <div className="row">
+                <div className="row col s8 m10">
                     <h1>Dashboard</h1>
-                </div>
-                <div className ="row button-clicking-box">
-                    <DashButtonComponent dispatcher={this.dispatcher} />
-                    <DashBoxComponent dispatcher={this.dispatcher} />
-                </div>
-                <div className="home-pic">
-                    <img src="https://d13yacurqjgara.cloudfront.net/users/150724/screenshots/1888488/149_x-wing_1x.png"/>
-                    <div><small>original artwork by Marko Stupic from Croatia</small></div>
-                    <div><small>hesitantly borrowed from his nifty collection at dribbble.com</small></div>
+
+                    <div className ="row button-clicking-box">
+                        <DashButtonComponent dispatcher={this.dispatcher} />
+                        <DashBoxComponent dispatcher={this.dispatcher} />
+                    </div>
+                    <div className="home-pic">
+                        <img src="https://d13yacurqjgara.cloudfront.net/users/150724/screenshots/1888488/149_x-wing_1x.png"/>
+                        <div><small>original artwork by Marko Stupic from Croatia</small></div>
+                        <div><small>hesitantly borrowed from his nifty collection at dribbble.com</small></div>
+                    </div>
                 </div>
             </div>
         );

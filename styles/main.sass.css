@@ -26,3 +26,6 @@ button {
 
 .material-icons {
   font-size: tiny; }
+
+img {
+  max-width: 100%; }
